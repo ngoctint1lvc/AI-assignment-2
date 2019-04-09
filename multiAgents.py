@@ -269,7 +269,7 @@ def betterEvaluationFunction(currentGameState):
     pos = currentGameState.getPacmanPosition()
     food = currentGameState.getFood()
     ghostStates = currentGameState.getGhostStates()
-    scaredTimes = [ghostState.scaredTimer for ghostState in ghostStates]
+    scaredTimes = [(i, ghostState.scaredTimer) for i, ghostState in enumerate(ghostStates)]
     additionalScore = 0
 
     # consider food positions
@@ -284,8 +284,8 @@ def betterEvaluationFunction(currentGameState):
         additionalScore = -500.0
 
     # consider scared ghost
-    for scaredTime in scaredTimes:
-        additionalScore += 200.0*scaredTime/40
+    for i, scaredTime in scaredTimes:
+        additionalScore += 200.0*scaredTime/(40*manhattanDistance(pos, ghostStates[i].getPosition()) + 1)
 
     # timer
     additionalScore += 1
